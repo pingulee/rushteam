@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,18 +14,29 @@ import ServiceModal from "./components/ServiceModal";
 
 const QA_ITEMS = [
   {
-    question: "대리는 얼마나 걸리나요?",
+    question: "러쉬팀 소개",
     answer:
-      "보통 하루 3~5승 기준이며, 티어와 MMR에 따라 다소 차이가 있을 수 있습니다.",
+      "러쉬팀은 발로란트 전문 레디언트 기사님들로 구성된 프리미엄 대리·듀오·코칭 팀으로, 빠르고 안전하게 원하는 티어 달성을 도와드립니다.",
   },
   {
-    question: "강의는 어떻게 진행되나요?",
-    answer: "디스코드를 통해 1:1로 레디언트 강사님과 실시간으로 진행됩니다.",
+    question: "발로란트 대리는 어떤 서비스인가요?",
+    answer:
+      "고객님의 계정을 전문 레디언트 기사님이 직접 플레이하여 목표한 티어까지 빠르게 승급시켜드리는 서비스입니다.",
+  },
+  {
+    question: "발로란트 듀오는 어떤 서비스인가요?",
+    answer:
+      "고객님과 러쉬팀 소속 레디언트 기사님이 함께 플레이하여 승률을 높이고, 게임을 즐기며 원하는 티어로 올라가는 서비스입니다.",
   },
   {
     question: "안전한가요?",
     answer:
-      "러쉬팀은 100% 수동 플레이를 기반으로 하며, 고객 계정 보호를 최우선으로 합니다.",
+      "러쉬팀의 모든 서비스는 100% 수작업으로 이루어지며, VPN 사용 및 보안 조치를 통해 고객님의 계정을 안전하게 보호하고 있습니다.",
+  },
+  {
+    question: "작업 시간은 어느정도 소요되나요?",
+    answer:
+      "요청하신 티어와 현재 계정의 MMR 상태에 따라 작업 시간이 달라질 수 있지만 최대한 빨리 진행해드립니다다.",
   },
 ];
 
@@ -72,6 +83,9 @@ export default function Home() {
     price: string;
     images?: string[];
   } | null>(null);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const swiperRef = useRef<any>(null);
 
   const slides = [
     {
@@ -153,7 +167,6 @@ export default function Home() {
 
   return (
     <>
-      {/* ✅ 고정된 배경 이미지 */}
       <div className="fixed inset-0 -z-10">
         <Image
           src="/images/bg-1.webp"
@@ -165,12 +178,22 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
+      <div className="sr-only">
+        <h1>RushTeam 발로란트 대리, 듀오, 코칭 전문</h1>
+        <p>
+          빠르고 안전한 발로란트 승급 서비스를 제공합니다. 수동 플레이 기반으로
+          안전하게 계정을 관리합니다.
+        </p>
+      </div>
+
       <Swiper
         direction="vertical"
         slidesPerView={1}
         mousewheel
         modules={[Mousewheel]}
         className="h-screen w-full"
+        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+        onSwiper={(swiper) => (swiperRef.current = swiper)}
       >
         {slides.map((slide, i) => (
           <SwiperSlide
@@ -182,6 +205,23 @@ export default function Home() {
         ))}
       </Swiper>
 
+      {/* ✅ 동그라미 인디케이터 */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-30">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => swiperRef.current?.slideTo(i)}
+            title={`섹션 ${i + 1} 이동`}
+            aria-label={`섹션 ${i + 1}로 이동`}
+            className={`w-3 h-3 rounded-full border transition ${
+              activeIndex === i ? "bg-white" : "bg-transparent border-white/50"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* ✅ 서비스 모달 */}
       {selectedService && (
         <ServiceModal
           open={!!selectedService}
