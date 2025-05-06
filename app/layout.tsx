@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     "러쉬팀",
     "RushTeam",
     "발로란트 대리 사이트",
+    "발로 대리",
+    "발로란트 대리기사",
+    "발로란트 티어"
   ],
   authors: [{ name: "RushTeam", url: "https://러쉬팀.com" }],
   viewport: "width=device-width, initial-scale=1",
@@ -38,9 +41,9 @@ export const metadata: Metadata = {
     siteName: "러쉬팀",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/images/001.png",
+        width: 1280,
+        height: 720,
         alt: "발로란트 대리 서비스 | 러쉬팀",
       },
     ],
