@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://러쉬팀.com
+
+# Sitemaps
+Sitemap: https://러쉬팀.com/sitemap.xml
