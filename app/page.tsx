@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/mousewheel";
@@ -85,7 +85,7 @@ export default function Home() {
   } | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperRef>(null);
 
   const slides = [
     {
@@ -179,11 +179,88 @@ export default function Home() {
       </div>
 
       <div className="sr-only">
-        <h1>RushTeam 발로란트 대리, 듀오, 코칭 전문</h1>
-        <p>
-          빠르고 안전한 발로란트 승급 서비스를 제공합니다. 수동 플레이 기반으로
-          안전하게 계정을 관리합니다.
-        </p>
+        <article>
+          <h1>발로란트 대리 서비스, 왜 러쉬팀이 선택받는가?</h1>
+
+          <section>
+            <h2>발로란트 랭크 상승, 혼자만의 싸움이 아닙니다</h2>
+            <p>
+              발로란트는 협업과 전략이 핵심인 FPS 게임입니다. 개인 실력만으로는
+              일정 랭크 이상 상승이 쉽지 않으며, 이러한 경우 발로란트 대리
+              서비스가 큰 도움이 됩니다.
+            </p>
+          </section>
+
+          <section>
+            <h2>러쉬팀, 신뢰와 실력으로 검증된 대리 서비스</h2>
+            <p>
+              러쉬팀은 다년간의 경험과 축적된 노하우를 통해 안전하고 신뢰할 수
+              있는 서비스를 제공합니다.
+            </p>
+            <h3>전문적인 대리 진행</h3>
+            <p>
+              상위 랭크를 유지하는 전문 플레이어들이 직접 대리를 수행하여 빠르고
+              확실하게 원하는 랭크로 올려드립니다.
+            </p>
+
+            <h3>안전한 계정 관리</h3>
+            <p>
+              러쉬팀은 계정 보안을 최우선으로 하며, 고객의 개인정보 보호를
+              철저히 관리합니다.
+            </p>
+
+            <h3>투명한 진행 과정</h3>
+            <p>
+              모든 대리 과정은 실시간으로 고객에게 투명하게 공유되어 믿고 맡길
+              수 있습니다.
+            </p>
+          </section>
+
+          <section>
+            <h2>발로란트 대리, 어떤 경우에 필요할까?</h2>
+            <ul>
+              <li>
+                <strong>시간 부족:</strong> 일상에서 충분한 플레이 시간을
+                확보하기 어려울 때
+              </li>
+              <li>
+                <strong>실력 향상:</strong> 높은 티어에서 플레이하며 게임 실력을
+                향상시키고자 할 때
+              </li>
+              <li>
+                <strong>친구와의 플레이:</strong> 친구들과의 플레이에서 더 좋은
+                성과를 얻고 싶을 때
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>러쉬팀을 선택해야 하는 이유</h2>
+            <ul>
+              <li>오랜 경험과 전문성</li>
+              <li>상위 랭크 전문 플레이어 구성</li>
+              <li>높은 고객 만족도와 재이용률</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>결론: 발로란트 대리, 러쉬팀과 함께라면 걱정 없습니다</h2>
+            <p>
+              발로란트 랭크 상승의 고민, 이제 러쉬팀과 함께 해결하세요.
+              전문적이고 안전한 서비스로 확실한 랭크 상승을 경험할 수 있습니다.
+            </p>
+          </section>
+
+          <footer>
+            <p>
+              지금 바로{" "}
+              <a href="https://playvalorant.com/ko-kr/">
+                러쉬팀 발로란트 대리 서비스
+              </a>
+              를 방문하여 자세한 내용을 확인해보세요!
+            </p>
+          </footer>
+        </article>
       </div>
 
       <Swiper
@@ -193,7 +270,11 @@ export default function Home() {
         modules={[Mousewheel]}
         className="h-screen w-full"
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-        onSwiper={(swiper) => (swiperRef.current = swiper)}
+        onSwiper={(swiper) => {
+          if (swiperRef.current) {
+            swiperRef.current.swiper = swiper;
+          }
+        }}
       >
         {slides.map((slide, i) => (
           <SwiperSlide
@@ -211,7 +292,7 @@ export default function Home() {
           <button
             key={i}
             type="button"
-            onClick={() => swiperRef.current?.slideTo(i)}
+            onClick={() => swiperRef.current?.swiper.slideTo(i)}
             title={`섹션 ${i + 1} 이동`}
             aria-label={`섹션 ${i + 1}로 이동`}
             className={`w-3 h-3 rounded-full border transition ${
